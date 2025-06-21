@@ -1,2 +1,2 @@
 express
-socket.io
+qrcode

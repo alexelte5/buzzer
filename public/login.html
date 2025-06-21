@@ -1,11 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/style.css" />
     <title>Login</title>
-</head>
-<body>
-    <h1>Hier der LOGIN</h1>
-</body>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="script.js"></script>
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="./favicon/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="./favicon/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="./favicon/favicon-16x16.png"
+    />
+    <link rel="manifest" href="/site.webmanifest" />
+  </head>
+  <body>
+    <div class="main-content">
+      <div class="login-container">
+        <input
+          type="text"
+          id="username"
+          class="input-username"
+          placeholder="Benutzername"
+          required
+        />
+        <button class="button-username" onclick="navigate()">Weiter</button>
+      </div>
+    </div>
+  </body>
 </html>

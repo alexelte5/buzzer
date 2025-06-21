@@ -1,11 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/style.css" />
     <title>Buzzer</title>
-</head>
-<body>
-    <h1>Hier der ADMIN</h1>
-</body>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="./favicon/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="./favicon/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="./favicon/favicon-16x16.png"
+    />
+    <link rel="manifest" href="/site.webmanifest" />
+  </head>
+  <body>
+    <div class="top-right">
+      <button onclick="openQRModal()">QR-Code</button>
+    </div>
+
+    <div class="main-content">
+      <button onclick="enableBuzzer()" id="enableBuzzer">
+        Buzzer freigeben
+      </button>
+      <button onclick="disableBuzzer()" id="disableBuzzer" class="hide">
+        Buzzer sperren
+      </button>
+
+      <div class="lists">
+        <div class="users">
+          <h2>Teilnehmer</h2>
+          <ul id="userList"></ul>
+        </div>
+        <div class="buzzers">
+          <h2>Buzz-Liste</h2>
+          <ul id="buzzList"></ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" id="qrModal">
+      <div class="modal-content">
+        <h2>QR-Code</h2>
+        <div id="qrcode"></div>
+        <button class="close-btn" onclick="closeQRModal()">Schließen</button>
+      </div>
+    </div>
+  </body>
 </html>

@@ -3,9 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/style.css">
     <title>Buzzer</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="script.js"></script>
+    <link rel="apple-touch-icon" sizes="180x180" href="./favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./favicon/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
 </head>
 <body>
-    <h1>Hier das GAME</h1>
+    <div class="main-content">
+        <button id="buzzer" class="buzzer">Buzz</button>
+    </div>
+    <div class="bottom-right">
+        <button onclick="openCasino()">🤫</button>
+        <button onclick="openShop()">💲</button>
+    </div>
+
+    <div id="shop-dialog-container"></div>
+    <div id="casino-dialog-container"></div>
 </body>
 </html>
