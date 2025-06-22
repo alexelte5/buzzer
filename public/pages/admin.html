@@ -6,7 +6,8 @@
     <link rel="stylesheet" href="./css/style.css" />
     <title>Buzzer</title>
     <script src="/socket.io/socket.io.js"></script>
-    <script src="script.js"></script>
+    <script src="../js/common.js"></script>
+    <script src="../js/admin.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
     <link
       rel="apple-touch-icon"
@@ -25,11 +26,10 @@
       sizes="16x16"
       href="./favicon/favicon-16x16.png"
     />
-    <link rel="manifest" href="/site.webmanifest" />
   </head>
   <body>
     <div class="top-right">
-      <button onclick="openQRModal()">QR-Code</button>
+      <button id="settings" onclick="openSettings()">Einstellungen</button>
     </div>
 
     <div class="main-content">
@@ -52,12 +52,19 @@
       </div>
     </div>
 
-    <div class="modal" id="qrModal">
-      <div class="modal-content">
-        <h2>QR-Code</h2>
-        <div id="qrcode"></div>
-        <button class="close-btn" onclick="closeQRModal()">Schließen</button>
+    <dialog id="settings-dialog" class="settings">
+      <div class="settings-wrapper">
+        <div class="upper">
+          <h1>Einstellungen</h1>
+          <button class="close" onclick="closeSettings()">&times;</button>
+        </div>
+        <button onclick="openQRModal()">QR-Code erstellen</button>
+        <div class="modal-content hide" id="modal-content">
+          <div id="qrcode"></div>
+          <button onclick="closeQRModal()">QR-Code schließen</button>
+        </div>
+        <button class="danger" onclick="deleteCookies()">Abmelden</button>
       </div>
-    </div>
+    </dialog>
   </body>
 </html>

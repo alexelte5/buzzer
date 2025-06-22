@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/style.css" />
+    <title>Buzzer</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="./js/common.js"></script>
+    <script src="./js/buzzer.js"></script>
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="./favicon/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="./favicon/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="./favicon/favicon-16x16.png"
+    />
+  </head>
+  <body>
+    <div class="top-right">
+      <button id="settings" onclick="openSettings()">Einstellungen</button>
+    </div>
+    <div class="main-content">
+      <button id="buzzer" class="buzzer">Buzz</button>
+    </div>
+    <div class="bottom-right">
+      <button onclick="openCasino()">🤫</button>
+      <button onclick="openShop()">💲</button>
+    </div>
+    <dialog id="settings-dialog">
+      <h2>Einstellungen</h2>
+      <button class="danger" onclick="deleteCookies()">Abmelden</button>
+    </dialog>
+    <div id="shop-dialog-container"></div>
+    <div id="casino-dialog-container"></div>
+  </body>
+</html>

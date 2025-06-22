@@ -16,14 +16,14 @@ Minigame -> Maybe Casino -> Startguthaben: 100chips -> 1€=1000chips 3€=5000c
 Skins/Sounds hinzufügen für mehr fun -> Mit Währung aus Minigame bezahlen
 Optionen:
 1. Skins
-    Buzzer in verschiedenen Farben
+    Buzzer in verschiedenen Farben                                          100 each
 2. Sounds
-    Verschiedne Buzzer Sounds
+    Verschiedne Buzzer Sounds                                               100 each
 3. Skins mit Sounds (legendary type shit)
-    Tiere (3 tiere) -> Kuh, Adler,                                          50 chips
-    Auto                                                                    50 chips
-    Punching bag                                                            100 chips
-    Geldsack                                                                100 chips
+    Tiere (3 tiere) -> Kuh, Adler,                                          250 chips
+    Auto                                                                    250 chips
+    Punching bag                                                            250 chips
+    Geldsack                                                                250 chips
     Travis Scott - Fein (3sek)                                              500 chips
     Kai is a big humper                                                     750 chips
     DJ Khaled - We the best music - Another one - Life if Roblux            1000 chips
