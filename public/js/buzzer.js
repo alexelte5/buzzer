@@ -1,3 +1,8 @@
+window.addEventListener("DOMContentLoaded", async () => {
+  getRandom()
+  applySkin()
+})
+
 // Remove user when disconnecting
 window.addEventListener("beforeunload", async () => {
   const data = await getCookies();
@@ -18,7 +23,29 @@ window.addEventListener("beforeunload", async () => {
   );
 });
 
+let skin;
+let random;
+
+function getRandom() {
+  random = Math.floor(Math.random() * 3);
+}
+
 // Buzzer
+async function applySkin() {
+  const data = await getCookies()
+  const parsed = JSON.parse(data)
+  const skinId = parsed.selectedSkin
+  skin = shopItems.find(s => s.id === skinId)
+
+  if (skin.id == 'skin8') {
+    document.getElementById("buzzer-img").src = skin.img[0];
+    document.getElementById("buzzer-sound").src = skin.sound[random];
+  } else if (skin) {
+    document.getElementById("buzzer-img").src = skin.img[0];
+    document.getElementById("buzzer-sound").src = skin.sound;
+  }
+}
+
 async function buzz() {
   const data = await getCookies();
   const parsed = JSON.parse(data);
@@ -32,7 +59,11 @@ async function buzz() {
     return;
   }
 
+  getRandom();
+  await applySkin();
   socket.emit("buzz", { name: username, id });
+  document.getElementById("buzzer-img").src = skin.img[1]
+  document.getElementById('buzzer-sound').play();
 
   buzzer.removeEventListener("click", buzz);
   buzzer.disabled = true;
@@ -48,9 +79,11 @@ socket.on("buzzerStatus", (enabled) => {
   if (enabled) {
     buzzer.classList.remove("disabled");
     buzzer.addEventListener("click", buzz);
+    document.getElementById("buzzer-img").src = skin.img[0];
   } else {
     buzzer.classList.add("disabled");
     buzzer.removeEventListener("click", buzz);
+    document.getElementById("buzzer-img").src = skin.img[1];
   }
 });
 
@@ -64,17 +97,25 @@ socket.on("buzzRejected", (message) => {
 });
 
 // Dialogs
-async function openCasino() {
-  const container = document.getElementById("casino-dialog-container");
+function openSettings() {
+  document.getElementById("settings-dialog").showModal();
+}
+
+function closeSettings() {
+  document.getElementById("settings-dialog").close();
+}
+
+async function openGame() {
+  const container = document.getElementById("game-dialog-container");
 
   // Nur beim ersten Mal ladeny
-  if (!document.getElementById("casino-dialog")) {
-    const response = await fetch("/casino.html"); // Pfad zur ausgelagerten Datei
+  if (!document.getElementById("game-dialog")) {
+    const response = await fetch("../dialogs/game.html");
     const html = await response.text();
     container.innerHTML = html;
   }
 
-  document.getElementById("casino-dialog").showModal();
+  document.getElementById("game-dialog").showModal();
 }
 
 async function openShop() {
@@ -82,7 +123,7 @@ async function openShop() {
 
   // Nur beim ersten Mal ladeny
   if (!document.getElementById("shop-dialog")) {
-    const response = await fetch("/shop.html"); // Pfad zur ausgelagerten Datei
+    const response = await fetch("../dialogs/shop.html");
     const html = await response.text();
     container.innerHTML = html;
   }

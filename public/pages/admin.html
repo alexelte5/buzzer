@@ -41,13 +41,13 @@
       </button>
 
       <div class="lists">
-        <div class="users">
+        <div class="list">
           <h2>Teilnehmer</h2>
-          <ul id="userList"></ul>
+          <div id="userList" class="userList"></div>
         </div>
-        <div class="buzzers">
+        <div class="list">
           <h2>Buzz-Liste</h2>
-          <ul id="buzzList"></ul>
+          <div id="buzzList" class="buzzList"></div>
         </div>
       </div>
     </div>
@@ -58,13 +58,33 @@
           <h1>Einstellungen</h1>
           <button class="close" onclick="closeSettings()">&times;</button>
         </div>
-        <button onclick="openQRModal()">QR-Code erstellen</button>
-        <div class="modal-content hide" id="modal-content">
-          <div id="qrcode"></div>
-          <button onclick="closeQRModal()">QR-Code schließen</button>
+        <div>
+          <button onclick="openQRModal()" id="openQR">QR-Code erstellen</button>
+          <button onclick="closeQRModal()" id="closeQR" class="hide">
+            QR-Code schließen
+          </button>
+          <div class="modal-content hide" id="modal-content">
+            <div id="qrcode"></div>
+          </div>
+        </div>
+        <button id="csv-export" onclick="exportCSV()">CSV Exportieren</button>
+        <div class="reset-score" id="reset-score">
+          <button id="reset-button" onclick="askReset()">
+            Punkte zurücksetzen
+          </button>
+          <button id="cancel-reset" class="hide" onclick="cancelReset()">
+            Abbrechen
+          </button>
+          <button id="confirm-reset" class="danger hide" onclick="resetScore()">
+            Zurücksetzen
+          </button>
         </div>
         <button class="danger" onclick="deleteCookies()">Abmelden</button>
       </div>
+      <div id="score-reset-toast" class="toast hide">Punkte erfolgreich zurückgestetzt</div>
+      <div id="export-csv-toast" class="toast hide">CSV wird heruntergeladen</div>
     </dialog>
+
+    <div id="points-dialog-container" class="points"></div>
   </body>
 </html>

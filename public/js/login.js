@@ -1,4 +1,4 @@
-function navigate() {
+function register() {
   const userName = document.getElementById("username").value.trim();
 
   if (userName === "") {
@@ -28,10 +28,13 @@ async function registerUser(name) {
     body: JSON.stringify({ name }),
   });
   const user = await response.json();
-
   userData = {
     name: user.name,
     id: user.id,
+    score: user.score,
+    coins: user.coins,
+    skins: user.skins,
+    selectedSkin: user.selectedSkin,
   };
 
   setCookies(JSON.stringify(userData), 7);

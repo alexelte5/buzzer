@@ -5,7 +5,6 @@ const express = require("express");
 const path = require("path");
 const http = require("http");
 const { Server } = require("socket.io");
-const { builtinModules } = require("node:module");
 
 const app = express();
 const server = http.createServer(app);
@@ -46,20 +45,25 @@ app.get("/admin", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "./pages/admin.html"));
 });
 
+app.get("/admin/users", (req, res) => {
+  const filteredUsers = users.map(user => ({
+    name: user.name,
+    score: user.score
+  }));
+  res.json(filteredUsers);
+})
+
 app.post("/register", (req, res) => {
     const { name } = req.body;
     if (!name) return res.status(400).send("Name ist erforderlich");
     
-    const user = { id: Date.now().toString(), name };
+    const user = { id: Date.now().toString(), name, score: 0, coins: 0, skins: [], selectedSkin: 'skin5' };
     res.json(user);
-
     if (name === "admin1") {
         return;
     }
 
     users.push(user);
-    console.log(`Neuer Benutzer registriert: ${name}`);
-    console.log(`Aktuelle Benutzer: ${users.map(u => u.name).join(", ")}`);
     io.emit('updateUsers', users);
 });
 
@@ -72,6 +76,27 @@ app.post("/disconnect", (req, res) => {
   }
   res.json({ success: true });
   io.emit("updateUsers", users);
+});
+
+app.post("/admin/reset-score", (req, res) => {
+  users.forEach(user => {
+    user.score = 0;
+  });
+
+  io.emit("updateUsers", users);
+  res.send({success: true});
+});
+
+app.post("/admin/exportCSV", (req, res) => {
+  const headers = ["name", "score"];
+  const rows = users.map((user) =>
+    headers.map((key) => JSON.stringify(user[key] ?? "")).join(",")
+  );
+  const csvContent = [headers.join(","), ...rows].join("\n");
+
+  res.setHeader("Content-Type", "text/csv");
+  res.setHeader("Content-Disposition", "attachment; filename=users.csv");
+  res.send(csvContent);
 });
 
 io.on("connection", (socket) => {
@@ -118,6 +143,14 @@ io.on("connection", (socket) => {
       io.emit("updateUsers", users);
     }
   });
+
+  socket.on("updatePoints", (userData) => {
+    const user = users.find((u) => u.id === userData.id);
+    if (user) {
+      user.score = userData.score;
+      io.emit("updateUsers", users);
+    }
+  })
 });
 
 // Server starten

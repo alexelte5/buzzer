@@ -4,8 +4,9 @@ let userData = {
   name: "",
   id: "",
   score: 0,
-  chips: 0,
+  coins: 0,
   skins: [],
+  selectedSkin: "",
 };
 
 // richtige höhe des Viewports setzen
@@ -52,9 +53,24 @@ async function deleteCookies() {
     })
   );
 
-  const deleted = await setCookies("data", "", -1);
+  const deleted = await setCookies("", -1);
   window.location.href = "/login";
 }
+
+socket.on("updateUsers", async (users) => {
+  // wo users.id == cookie.userid -> score updaten
+  const data = await getCookies();
+  if (!data) return;
+  const cookieData = JSON.parse(data);
+  const user = users.find((u) => u.id === cookieData.id);
+  if (user) {
+    cookieData.score = user.score;
+    cookieData.coins = user.coins;
+    cookieData.skins = user.skins;
+    cookieData.selectedSkin = user.selectedSkin;
+    await setCookies(JSON.stringify(cookieData), 7);
+  }
+})
 
 // Navigation
 async function navigation() {
@@ -109,11 +125,15 @@ socket.on("connect", async () => {
   }
 });
 
-// Dialogs
-function openSettings() {
-  document.getElementById("settings-dialog").showModal();
-}
 
-function closeSettings() {
-  document.getElementById("settings-dialog").close();
+// toast
+function showToast(el) {
+  const toast = document.getElementById(el);
+  toast.classList.remove("hide");
+  toast.classList.add("show");
+
+  setTimeout(() => {
+    toast.classList.remove("show");
+    toast.classList.add("hide");
+  }, 3000);
 }
