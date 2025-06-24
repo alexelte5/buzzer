@@ -1,3 +1,33 @@
+socket.on("buzzerStatus", (enabled) => {
+  const buzzer = document.getElementById("buzzer");
+  if (!buzzer) {
+    return;
+  }
+  buzzer.disabled = !enabled;
+  if (enabled) {
+    buzzer.classList.remove("disabled");
+    buzzer.addEventListener("click", buzz);
+    if (document.getElementById("buzzer-img")) {
+      document.getElementById("buzzer-img").src = skin.img[0];
+    }
+  } else {
+    buzzer.classList.add("disabled");
+    buzzer.removeEventListener("click", buzz);
+    if (document.getElementById("buzzer-img")) {
+      document.getElementById("buzzer-img").src = skin.img[1];
+    }
+  }
+});
+
+socket.on("buzzRejected", (message) => {
+  alert(message);
+  const buzzer = document.getElementById("buzzer");
+  if (buzzer) {
+    buzzer.disabled = true;
+    buzzer.classList.add("disabled");
+  }
+});
+
 window.addEventListener("DOMContentLoaded", async () => {
   getRandom();
   applySkin();
@@ -40,21 +70,28 @@ async function applySkin() {
   skin = shopItems.find((s) => s.id === skinId);
 
   if (skinId != "") {
+    await createImg();
+    document.getElementById("buzzer").classList.add("buzzer-bg");
     if (skin.id == "DJ-Khaled") {
-      await createImg();
+      if (buzzer.innerText != "") {
+        buzzer.innerText = "";
+      }
       document.getElementById("buzzer-img").src = skin.img[0];
       document.getElementById("buzzer-sound").src = skin.sound[random];
+      return skin;
     } else if (skin) {
-      await createImg()
+      if (buzzer.innerText != "") {
+        buzzer.innerText = "";
+      }
       document.getElementById("buzzer-img").src = skin.img[0];
       document.getElementById("buzzer-sound").src = skin.sound;
+      return skin;
     }
   } else {
     buzzer.innerText = "Buzz";
   }
 }
 
-//TODO: Buzzern für buzzer ohne img fixen
 async function buzz() {
   const data = await getCookies();
   const parsed = JSON.parse(data);
@@ -69,41 +106,17 @@ async function buzz() {
   }
 
   getRandom();
-  await applySkin();
+  const skin = await applySkin();
   socket.emit("buzz", { name: username, id });
-  document.getElementById("buzzer-img").src = skin.img[1];
-  document.getElementById("buzzer-sound").play();
+  if (skin) {
+    document.getElementById("buzzer-img").src = skin.img[1];
+    document.getElementById("buzzer-sound").play();
+  }
 
   buzzer.removeEventListener("click", buzz);
   buzzer.disabled = true;
   buzzer.classList.add("disabled");
 }
-
-socket.on("buzzerStatus", (enabled) => {
-  const buzzer = document.getElementById("buzzer");
-  if (!buzzer) {
-    return;
-  }
-  buzzer.disabled = !enabled;
-  if (enabled) {
-    buzzer.classList.remove("disabled");
-    buzzer.addEventListener("click", buzz);
-    document.getElementById("buzzer-img").src = skin.img[0];
-  } else {
-    buzzer.classList.add("disabled");
-    buzzer.removeEventListener("click", buzz);
-    document.getElementById("buzzer-img").src = skin.img[1];
-  }
-});
-
-socket.on("buzzRejected", (message) => {
-  alert(message);
-  const buzzer = document.getElementById("buzzer");
-  if (buzzer) {
-    buzzer.disabled = true;
-    buzzer.classList.add("disabled");
-  }
-});
 
 // Dialogs
 function openDialog(dialog) {
@@ -142,11 +155,11 @@ async function openShop() {
 }
 
 async function createImg() {
-  const image = document.createElement("img");
-  image.id = "buzzer-img";
-  image.width = 100;
-  image.alt = "Buzzer";
-  image.classList.add("buzzer-img");
-
-  document.getElementById("buzzer").appendChild(image);
+  if (!document.getElementById("buzzer-img")) {
+    const image = document.createElement("img");
+    image.id = "buzzer-img";
+    image.width = 100;
+    image.classList.add("buzzer-img");
+    document.getElementById("buzzer").appendChild(image);
+  }
 }

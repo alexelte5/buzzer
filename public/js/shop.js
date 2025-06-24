@@ -17,6 +17,18 @@ socket.on("buy-success", async (data) => {
   applySkin();
 });
 
+socket.on("skin-change-success", async (data) => {
+  const cookie = await getCookies();
+  if (cookie) {
+    const parsed = JSON.parse(cookie);
+    parsed.selectedSkin = data.selectedSkin
+    await setCookies(JSON.stringify(parsed), 7);
+  }
+  showToast("skin-change")
+  loadItems();
+  applySkin();
+})
+
 async function loadItems() {
   const skinsContainer = document.getElementById("skins");
   const chipsContainer = document.getElementById("player-chips");
@@ -30,7 +42,7 @@ async function loadItems() {
   const chips = parsed.chips;
   const user = parsed;
 
-  chipsContainer.textContent = "Chips: " + chips;
+  chipsContainer.textContent = chips + "¢";
   skinsContainer.innerHTML = "";
 
   allSkins.forEach((skin) => {
@@ -49,16 +61,15 @@ async function loadItems() {
 
     const price = document.createElement("button");
     price.classList.add("buy-button");
-
-    if (isBought) {
-      price.textContent = "Auswählen";
-      price.addEventListener("click", () => selectSkin(skin));
-    } else if (isApplied) {
+    if (isApplied) {
       price.textContent = "Auswählen";
       price.classList.add("disabled");
       price.disabled = true;
-    } else {
-      price.textContent = `${skin.price}`;
+    } else if (isBought) {
+      price.textContent = "Auswählen";
+      price.addEventListener("click", () => selectSkin(skin, user));
+    }  else {
+      price.textContent = `${skin.price}¢`;
       price.addEventListener("click", () => buySkin(skin, user));
     }
 
@@ -70,8 +81,8 @@ async function loadItems() {
   });
 }
 
-function selectSkin(skin) {
-  applySkin(skin);
+function selectSkin(skin, user) {
+  socket.emit("skin-change", { skin, user })
 }
 
 function buySkin(skin, user) {

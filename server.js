@@ -46,25 +46,32 @@ app.get("/admin", (req, res) => {
 });
 
 app.get("/admin/users", (req, res) => {
-  const filteredUsers = users.map(user => ({
+  const filteredUsers = users.map((user) => ({
     name: user.name,
-    score: user.score
+    score: user.score,
   }));
   res.json(filteredUsers);
-})
+});
 
 app.post("/register", (req, res) => {
-    const { name } = req.body;
-    if (!name) return res.status(400).send("Name ist erforderlich");
-    
-    const user = { id: Date.now().toString(), name, score: 0, chips: 100, skins: [], selectedSkin: '' };
-    res.json(user);
-    if (name === "admin1") {
-        return;
-    }
+  const { name } = req.body;
+  if (!name) return res.status(400).send("Name ist erforderlich");
 
-    users.push(user);
-    io.emit('updateUsers', users);
+  const user = {
+    id: Date.now().toString(),
+    name,
+    score: 0,
+    chips: 1000,
+    skins: [],
+    selectedSkin: "",
+  };
+  res.json(user);
+  if (name === "admin1") {
+    return;
+  }
+
+  users.push(user);
+  io.emit("updateUsers", users);
 });
 
 app.post("/disconnect", (req, res) => {
@@ -79,12 +86,12 @@ app.post("/disconnect", (req, res) => {
 });
 
 app.post("/admin/reset-score", (req, res) => {
-  users.forEach(user => {
+  users.forEach((user) => {
     user.score = 0;
   });
 
   io.emit("updateUsers", users);
-  res.send({success: true});
+  res.send({ success: true });
 });
 
 app.post("/admin/exportCSV", (req, res) => {
@@ -132,6 +139,7 @@ io.on("connection", (socket) => {
   socket.on("register", (userData) => {
     if (!users.some((u) => u.id === userData.id)) {
       users.push(userData);
+      socket.emit("buzzerStatus", buzzerEnabled);
       io.emit("updateUsers", users);
     }
   });
@@ -152,32 +160,57 @@ io.on("connection", (socket) => {
     }
   });
 
-  socket.on("skin-purchase", ({skin, user}) => {
-  if (!user) {
-    socket.emit("buy-error", "User nicht gefunden");
-    return;
-  }
-  const serverUser = users.find(u => u.id === user.id);
-  if (!serverUser) {
-    socket.emit("buy-error", "User nicht gefunden");
-    return;
-  }
-  if (serverUser.skins.includes(skin.id)) {
-    socket.emit("buy-error", "Skin bereits gekauft");
-    return;
-  }
-  if (serverUser.chips < skin.price) {
-    socket.emit("buy-error" ,"Nicht genügend Chips");
-    return;
-  }
+  socket.on("skin-purchase", ({ skin, user }) => {
+    if (!user) {
+      socket.emit("buy-error", "User nicht gefunden");
+      return;
+    }
+    const serverUser = users.find((u) => u.id === user.id);
+    if (!serverUser) {
+      socket.emit("buy-error", "User nicht gefunden");
+      return;
+    }
+    if (serverUser.skins.includes(skin.id)) {
+      socket.emit("buy-error", "Skin bereits gekauft");
+      return;
+    }
+    if (serverUser.chips < skin.price) {
+      socket.emit("buy-error", "Nicht genügend Chips");
+      return;
+    }
 
-  serverUser.chips -= skin.price;
-  serverUser.skins.push(skin.id);
-  serverUser.selectedSkin = skin.id;
+    serverUser.chips -= skin.price;
+    serverUser.skins.push(skin.id);
+    serverUser.selectedSkin = skin.id;
 
-  socket.emit("buy-success", { skins: serverUser.skins, chips: serverUser.chips, selectedSkin: serverUser.selectedSkin});
-  io.emit("updateUsers", users);
-})
+    socket.emit("buy-success", {
+      skins: serverUser.skins,
+      chips: serverUser.chips,
+      selectedSkin: serverUser.selectedSkin,
+    });
+    socket.emit("buzzerStatus", buzzerEnabled);
+    io.emit("updateUsers", users);
+  });
+  socket.on("skin-change", ({ skin, user }) => {
+    if (!user) {
+      socket.emit("buy-error", "User nicht gefunden");
+      return;
+    }
+    const serverUser = users.find((u) => u.id === user.id);
+    if (!serverUser) {
+      socket.emit("buy-error", "User nicht gefunden");
+      return;
+    }
+    if (serverUser.selectedSkin == skin.id) {
+      socket("buy-error", "Skin bereits ausgewählt");
+      return;
+    }
+
+    serverUser.selectedSkin = skin.id;
+    socket.emit("buzzerStatus", buzzerEnabled);
+    socket.emit("skin-change-success", {selectedSkin: serverUser.selectedSkin});
+    io.emit("updateUsers", users);
+  });
 });
 
 // Server starten

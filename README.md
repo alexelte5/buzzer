@@ -7,6 +7,9 @@ Eine kleine Buzzer-App die im local-network läuft
 ✅ Cookies einfügen damit ein refresh nicht reinfickt
 ✅ game & admin settings: abmelden
 
+Lösung für Default-Skin einbauen
+? Umbennnen für user einbauen
+
 Dialoge für Shop und Game
 Dialoge mit klicken außerhalb und X button schließen
 
