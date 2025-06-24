@@ -1,7 +1,7 @@
 window.addEventListener("DOMContentLoaded", async () => {
-  getRandom()
-  applySkin()
-})
+  getRandom();
+  applySkin();
+});
 
 // Remove user when disconnecting
 window.addEventListener("beforeunload", async () => {
@@ -32,20 +32,29 @@ function getRandom() {
 
 // Buzzer
 async function applySkin() {
-  const data = await getCookies()
-  const parsed = JSON.parse(data)
-  const skinId = parsed.selectedSkin
-  skin = shopItems.find(s => s.id === skinId)
+  const buzzer = document.getElementById("buzzer");
 
-  if (skin.id == 'skin8') {
-    document.getElementById("buzzer-img").src = skin.img[0];
-    document.getElementById("buzzer-sound").src = skin.sound[random];
-  } else if (skin) {
-    document.getElementById("buzzer-img").src = skin.img[0];
-    document.getElementById("buzzer-sound").src = skin.sound;
+  const data = await getCookies();
+  const parsed = JSON.parse(data);
+  const skinId = parsed.selectedSkin;
+  skin = shopItems.find((s) => s.id === skinId);
+
+  if (skinId != "") {
+    if (skin.id == "DJ-Khaled") {
+      await createImg();
+      document.getElementById("buzzer-img").src = skin.img[0];
+      document.getElementById("buzzer-sound").src = skin.sound[random];
+    } else if (skin) {
+      await createImg()
+      document.getElementById("buzzer-img").src = skin.img[0];
+      document.getElementById("buzzer-sound").src = skin.sound;
+    }
+  } else {
+    buzzer.innerText = "Buzz";
   }
 }
 
+//TODO: Buzzern für buzzer ohne img fixen
 async function buzz() {
   const data = await getCookies();
   const parsed = JSON.parse(data);
@@ -62,8 +71,8 @@ async function buzz() {
   getRandom();
   await applySkin();
   socket.emit("buzz", { name: username, id });
-  document.getElementById("buzzer-img").src = skin.img[1]
-  document.getElementById('buzzer-sound').play();
+  document.getElementById("buzzer-img").src = skin.img[1];
+  document.getElementById("buzzer-sound").play();
 
   buzzer.removeEventListener("click", buzz);
   buzzer.disabled = true;
@@ -97,12 +106,12 @@ socket.on("buzzRejected", (message) => {
 });
 
 // Dialogs
-function openSettings() {
-  document.getElementById("settings-dialog").showModal();
+function openDialog(dialog) {
+  document.getElementById(dialog).showModal();
 }
 
-function closeSettings() {
-  document.getElementById("settings-dialog").close();
+function closeDialog(dialog) {
+  document.getElementById(dialog).close();
 }
 
 async function openGame() {
@@ -129,4 +138,15 @@ async function openShop() {
   }
 
   document.getElementById("shop-dialog").showModal();
+  loadItems();
+}
+
+async function createImg() {
+  const image = document.createElement("img");
+  image.id = "buzzer-img";
+  image.width = 100;
+  image.alt = "Buzzer";
+  image.classList.add("buzzer-img");
+
+  document.getElementById("buzzer").appendChild(image);
 }

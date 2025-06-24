@@ -32,7 +32,7 @@ async function registerUser(name) {
     name: user.name,
     id: user.id,
     score: user.score,
-    coins: user.coins,
+    chips: user.chips,
     skins: user.skins,
     selectedSkin: user.selectedSkin,
   };

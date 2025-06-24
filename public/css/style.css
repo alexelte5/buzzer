@@ -135,7 +135,6 @@ button {
 }
 
 .buzzer {
-  background-color: var(--bg);
   width: 100%;
   height: 100%;
 }
@@ -315,6 +314,50 @@ dialog.points {
   display: none;
 }
 
+dialog.shop-dialog {
+  background-color: var(--surface);
+  color: var(--text);
+  border: none;
+  border-radius: 10px;
+  padding: 1rem;
+  width: 80vw;
+}
+
+.info {
+  text-align: center;
+  margin-bottom: 3em;
+}
+
+.skins {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem; /* kleineres Gap */
+  justify-content: flex-start; /* optional: sauberer Ausrichtung */
+}
+
+.skin {
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.img-preview {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  margin-bottom: 0.5em;
+}
+
+.buy-button {
+  height: 3em;
+}
+
+.player-chips {
+  text-align: center;
+}
+
 /* Spinner entfernen  */
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
@@ -332,5 +375,9 @@ input[type="number"] {
 
   h2 {
     font-size: 1.25em;
+  }
+
+  .skin {
+    width: 45%;
   }
 }

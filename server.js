@@ -57,7 +57,7 @@ app.post("/register", (req, res) => {
     const { name } = req.body;
     if (!name) return res.status(400).send("Name ist erforderlich");
     
-    const user = { id: Date.now().toString(), name, score: 0, coins: 0, skins: [], selectedSkin: 'skin5' };
+    const user = { id: Date.now().toString(), name, score: 0, chips: 100, skins: [], selectedSkin: '' };
     res.json(user);
     if (name === "admin1") {
         return;
@@ -150,7 +150,34 @@ io.on("connection", (socket) => {
       user.score = userData.score;
       io.emit("updateUsers", users);
     }
-  })
+  });
+
+  socket.on("skin-purchase", ({skin, user}) => {
+  if (!user) {
+    socket.emit("buy-error", "User nicht gefunden");
+    return;
+  }
+  const serverUser = users.find(u => u.id === user.id);
+  if (!serverUser) {
+    socket.emit("buy-error", "User nicht gefunden");
+    return;
+  }
+  if (serverUser.skins.includes(skin.id)) {
+    socket.emit("buy-error", "Skin bereits gekauft");
+    return;
+  }
+  if (serverUser.chips < skin.price) {
+    socket.emit("buy-error" ,"Nicht genügend Chips");
+    return;
+  }
+
+  serverUser.chips -= skin.price;
+  serverUser.skins.push(skin.id);
+  serverUser.selectedSkin = skin.id;
+
+  socket.emit("buy-success", { skins: serverUser.skins, chips: serverUser.chips, selectedSkin: serverUser.selectedSkin});
+  io.emit("updateUsers", users);
+})
 });
 
 // Server starten

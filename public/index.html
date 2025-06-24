@@ -31,12 +31,10 @@
   </head>
   <body>
     <div class="top-right">
-      <button id="settings" onclick="openSettings()">Einstellungen</button>
+      <button id="settings" onclick="openDialog('settings-dialog')">Einstellungen</button>
     </div>
     <div class="main-content">
-      <button id="buzzer" class="buzzer">
-        <img src="" id="buzzer-img" width="100" alt="Buzzer" class="buzzer-img">
-      </button>
+      <button id="buzzer" class="buzzer"></button>
       <audio id="buzzer-sound" src=""></audio>
     </div>
     <div class="bottom-right">
@@ -47,7 +45,7 @@
       <div class="settings-wrapper">
         <div class="upper">
           <h1>Einstellungen</h1>
-          <button class="close" onclick="closeSettings()">&times;</button>
+          <button class="close" onclick="closeDialog('settings-dialog')">&times;</button>
         </div>
         <button class="danger" onclick="deleteCookies()">Abmelden</button>
       </div>

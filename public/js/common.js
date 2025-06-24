@@ -4,7 +4,7 @@ let userData = {
   name: "",
   id: "",
   score: 0,
-  coins: 0,
+  chips: 0,
   skins: [],
   selectedSkin: "",
 };
@@ -65,7 +65,7 @@ socket.on("updateUsers", async (users) => {
   const user = users.find((u) => u.id === cookieData.id);
   if (user) {
     cookieData.score = user.score;
-    cookieData.coins = user.coins;
+    cookieData.chips = user.chips;
     cookieData.skins = user.skins;
     cookieData.selectedSkin = user.selectedSkin;
     await setCookies(JSON.stringify(cookieData), 7);

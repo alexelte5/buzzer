@@ -1,4 +1,18 @@
-<dialog id="shop-dialog">
-    <h2>Shop</h2>
-    <p>Willkommen im Shop, hier kannst du dir Skins und Sounds mit Chips kaufen!</p>
+<dialog id="shop-dialog" class="shop-dialog">
+  <div class="shop-dialog-wrapper">
+    <div class="upper">
+      <h2>Shop</h2>
+      <button class="close" onclick="closeDialog('shop-dialog')">
+        &times;
+      </button>
+    </div>
+    <p class="info">
+      Willkommen im Shop, hier kannst du dir Skins mit Chips kaufen!
+    </p>
+    <h2 id="player-chips" class="player-chips"></h2>
+    <div class="skins" id="skins"></div>
+  </div>
+
+  <div id="buy-success-toast" class="toast hide">Skin gekauft!</div>
+  <div id="buy-error-toast" class="toast hide"></div>
 </dialog>

@@ -7,7 +7,6 @@ Eine kleine Buzzer-App die im local-network läuft
 ✅ Cookies einfügen damit ein refresh nicht reinfickt
 ✅ game & admin settings: abmelden
 
-
 Dialoge für Shop und Game
 Dialoge mit klicken außerhalb und X button schließen
 
@@ -28,3 +27,7 @@ Minigame -> Maybe Casino -> Startguthaben: 100chips -> 1€=1000chips 3€=5000c
         Travis Scott - Fein (3sek)                                              750 chips
         Kai is a big humper                                                     750 chips
         DJ Khaled - We the best music - Another one - Life if Roblux            1000 chips
+
+
+background skins
+    regenbogen
