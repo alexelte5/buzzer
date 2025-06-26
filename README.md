@@ -7,13 +7,12 @@ Eine kleine Buzzer-App die im local-network läuft
 ✅ Cookies einfügen damit ein refresh nicht reinfickt
 ✅ game & admin settings: abmelden
 
-Lösung für Default-Skin einbauen
 ? Umbennnen für user einbauen
 
 Dialoge für Shop und Game
 Dialoge mit klicken außerhalb und X button schließen
 
-Minigame -> Maybe Casino -> Startguthaben: 100chips -> 1€=1000chips 3€=5000chips (paypal)
+Casino: Startguthaben: 100chips | 1. Ride the bus   2. Plane (diese crash game)   3. Coinflip
 
 ✅ Skins/Sounds hinzufügen für mehr fun -> Mit Währung aus Minigame bezahlen
     Optionen:

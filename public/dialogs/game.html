@@ -1,4 +1,172 @@
-<dialog id="game-dialog">
-    <h2>Game</h2>
-    <p>Willkommen im Game, hier verdienst du dir Chips um Skins und Sounds zu kaufen!</p>
+<dialog id="game-dialog" class="game-dialog">
+	<div class="game-dialog-wrapper">
+		<div class="game-selection" id="game-selection">
+			<div class="upper">
+				<h2>Casino</h2>
+				<h2 id="player-chips-main" class="player-chips"></h2>
+				<button class="close" onclick="closeDialog('game-dialog')">
+					&times;
+				</button>
+			</div>
+			<p class="info">
+				Willkommen im Casino, hier kannst du Chips verdienen!
+			</p>
+			<div class="game-list">
+				<button class="game" onclick="openGame('coinflip')">
+					<h2 class="info">Coinflip</h2>
+					<img src="../img/coinflip.png" class="game-img" />
+				</button>
+				<button class="game" onclick="openGame('numberguesser')">
+					<h2 class="info">Number Guesser</h2>
+					<img src="../img/numberguesser.png" class="game-img" />
+				</button>
+				<button class="game" onclick="openGame('rtb')">
+					<h2 class="info">Ride The Bus</h2>
+					<img src="../img/rtb.png" class="game-img" />
+				</button>
+				<button class="game" onclick="openGame('crash')">
+					<h2 class="info">Crash</h2>
+					<img src="../img/crash.png" class="game-img" />
+				</button>
+			</div>
+		</div>
+		<div class="hide" id="coinflip">
+			<div class="upper">
+				<div class="row">
+					<button class="close" onclick="openGameDialog()">
+						&#8678;
+					</button>
+					<h2>Coinflip</h2>
+				</div>
+				<h2 id="player-chips-coinflip" class="player-chips"></h2>
+				<button class="close" onclick="closeDialog('game-dialog')">
+					&times;
+				</button>
+			</div>
+			<div class="minigame">
+				<div id="coinflip-result" class="game-result"></div>
+				<div class="coin-container">
+					<h1 class="hide" id="heads">Kopf</h1>
+					<h1 class="hide" id="tails">Zahl</h1>
+				</div>
+				<div class="game-controls">
+					<div class="upper-controlls">
+						<select
+							name="coin-selector"
+							id="coin-selector"
+							class="input-points"
+						>
+							<option value="" disabled selected>
+								Bitte wählen
+							</option>
+							<option value="heads">Kopf</option>
+							<option value="tails">Zahl</option>
+						</select>
+						<input
+							type="number"
+							id="stake-input"
+							class="input-points"
+							placeholder="Einsatz"
+						/>
+					</div>
+					<button onclick="flipCoin()">Flip</button>
+				</div>
+				<div id="coinflip-toast" class="toast hide">
+					Coinflip noch im gange!
+				</div>
+			</div>
+		</div>
+		<div class="hide" id="numberguesser">
+			<div class="upper">
+				<div class="row">
+					<button class="close" onclick="openGameDialog()">
+						&#8678;
+					</button>
+					<h2>Number Guesser</h2>
+				</div>
+				<h2 id="player-chips-numberguesser" class="player-chips"></h2>
+				<button class="close" onclick="closeDialog('game-dialog')">
+					&times;
+				</button>
+			</div>
+			<div class="minigame">
+				<div id="numberguesser-result" class="game-result"></div>
+				<h1 id="number-container"></h1>
+				<div class="game-controls">
+					<div class="upper-controlls">
+						<select
+							name="number-selector"
+							id="number-selector"
+							class="input-points"
+						>
+							<option value="" disabled selected>
+								Bitte wählen
+							</option>
+							<option value="5">1:5</option>
+							<option value="10">1:10</option>
+							<option value="100">1:100</option>
+						</select>
+						<input
+							type="number"
+							id="number-guess"
+							class="input-points"
+							placeholder="Zahl"
+						/>
+					</div>
+					<input
+						type="number"
+						id="numberguesser-stake"
+						class="input-points"
+						placeholder="Einsatz"
+					/>
+					<button onclick="guessNumber()">Raten</button>
+				</div>
+				<div id="numberguesser-toast" class="toast hide">
+					Numberguesser noch im gange!
+				</div>
+			</div>
+		</div>
+		<div class="hide" id="rtb">
+			<div class="upper">
+				<div class="row">
+					<button class="close" onclick="openGameDialog()">
+						&#8678;
+					</button>
+					<h2>Ride The Bus</h2>
+				</div>
+				<h2 id="player-chips-rtb" class="player-chips"></h2>
+				<button class="close" onclick="closeDialog('game-dialog')">
+					&times;
+				</button>
+			</div>
+			<div class="minigame">
+				<div id="rtb-result" class="game-result"></div>
+				<h1 id="cards-container"></h1>
+				<div class="game-controls">
+					<input
+						type="number"
+						id="numberguesser-stake"
+						class="input-points"
+						placeholder="Einsatz"
+					/>
+					<button onclick="guessNumber()">Spielen</button>
+				</div>
+			</div>
+		</div>
+		<div class="hide" id="crash">
+			<div class="upper">
+				<div class="row">
+					<button class="close" onclick="openGameDialog()">
+						&#8678;
+					</button>
+					<h2>Crash</h2>
+				</div>
+				<h2 id="player-chips-crash" class="player-chips"></h2>
+				<button class="close" onclick="closeDialog('game-dialog')">
+					&times;
+				</button>
+			</div>
+			<h1>IN PRODUCTION</h1>
+		</div>
+	</div>
 </dialog>

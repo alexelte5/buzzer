@@ -108,16 +108,21 @@ async function editPoints() {
   const currentPoints =
     document.getElementById("userpoints-display").textContent;
   const pointsInput = document.getElementById("points-input").value.trim();
-  const points = parseInt(currentPoints, 10) + parseInt(pointsInput, 10);
-
-  socket.emit("updatePoints", {
+  if (pointsInput != "") {
+    const points = parseInt(currentPoints, 10) + parseInt(pointsInput, 10);
+    socket.emit("updatePoints", {
     name: userData.name,
     id: userData.id,
     score: points,
   });
+  } else {
+    showToast('error-points-toast');
+  }
+
   document.getElementById("points-input").value = "";
   document.getElementById("points-dialog").close();
 }
+
 function openSettings() {
   document.getElementById("settings-dialog").showModal();
 }

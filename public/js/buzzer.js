@@ -63,32 +63,41 @@ function getRandom() {
 // Buzzer
 async function applySkin() {
   const buzzer = document.getElementById("buzzer");
-
   const data = await getCookies();
   const parsed = JSON.parse(data);
   const skinId = parsed.selectedSkin;
   skin = shopItems.find((s) => s.id === skinId);
 
-  if (skinId != "") {
-    await createImg();
-    document.getElementById("buzzer").classList.add("buzzer-bg");
+  // Entferne ggf. das Bild
+  const oldImg = document.getElementById("buzzer-img");
+  if (oldImg) oldImg.remove();
+
+  // Entferne Text, falls vorhanden
+  buzzer.textContent = "";
+
+  if (skinId && skin) {
+    // Bild erzeugen
+    const image = document.createElement("img");
+    image.id = "buzzer-img";
+    image.width = 100;
+    image.classList.add("buzzer-img");
+    image.src = skin.img[0];
+    buzzer.appendChild(image);
+
+    buzzer.classList.add("buzzer-bg");
+
+    // Sound setzen
     if (skin.id == "DJ-Khaled") {
-      if (buzzer.innerText != "") {
-        buzzer.innerText = "";
-      }
-      document.getElementById("buzzer-img").src = skin.img[0];
       document.getElementById("buzzer-sound").src = skin.sound[random];
-      return skin;
-    } else if (skin) {
-      if (buzzer.innerText != "") {
-        buzzer.innerText = "";
-      }
-      document.getElementById("buzzer-img").src = skin.img[0];
+    } else {
       document.getElementById("buzzer-sound").src = skin.sound;
-      return skin;
     }
+    return skin;
   } else {
-    buzzer.innerText = "Buzz";
+    // Default: Bild entfernen, Text setzen
+    buzzer.textContent = "Buzz";
+    buzzer.classList.remove("buzzer-bg");
+    document.getElementById("buzzer-sound").src = "";
   }
 }
 
@@ -127,7 +136,7 @@ function closeDialog(dialog) {
   document.getElementById(dialog).close();
 }
 
-async function openGame() {
+async function openGameDialog() {
   const container = document.getElementById("game-dialog-container");
 
   // Nur beim ersten Mal ladeny
@@ -138,9 +147,15 @@ async function openGame() {
   }
 
   document.getElementById("game-dialog").showModal();
+  document.getElementById("game-selection").classList.remove("hide");
+  document.getElementById("coinflip").classList.add("hide")
+  document.getElementById("numberguesser").classList.add("hide")
+  document.getElementById("rtb").classList.add("hide")
+  document.getElementById("crash").classList.add("hide")
+  loadChips();
 }
 
-async function openShop() {
+async function openShopDialog() {
   const container = document.getElementById("shop-dialog-container");
 
   // Nur beim ersten Mal ladeny
