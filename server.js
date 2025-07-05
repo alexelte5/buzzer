@@ -9,7 +9,7 @@ const { Server } = require("socket.io");
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
-const PORT = 3000;
+const PORT = 5002;
 
 let users = [];
 let buzzerEnabled = false;
