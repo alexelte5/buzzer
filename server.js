@@ -1,6 +1,3 @@
-const dns = require("node:dns");
-const os = require("node:os");
-
 const { exec } = require("child_process");
 const express = require("express");
 const path = require("path");
@@ -17,19 +14,6 @@ let buzzerEnabled = false;
 let buzzed = [];
 let enable_time = 0;
 const rtbGamestate = {};
-
-// IP-Adresse des Servers ermitteln
-function getIP() {
-	return new Promise((resolve, reject) => {
-		dns.lookup(os.hostname(), { family: 4 }, (err, addr) => {
-			if (err) {
-				reject(err);
-			} else {
-				resolve(addr);
-			}
-		});
-	});
-}
 
 // Statische Dateien bereitstellen
 app.use(express.static(path.join(__dirname, "public")));
@@ -446,12 +430,10 @@ io.on("connection", (socket) => {
 // Server starten
 startServer();
 async function startServer() {
-	const IP = await getIP();
-	if (IP) {
-		server.listen(PORT, IP, () => {
-			console.log(`🚀 Server läuft unter http://${IP}:${PORT}`);
-		});
-	} else {
-		console.error("Fehler beim Ermitteln der IP-Adresse.");
+	const IP = '0.0.0.0';
+	try {
+		server.listen(PORT, IP)
+	} catch (err) {
+		console.error("Error: ", err)
 	}
 }
