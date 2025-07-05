@@ -15,6 +15,7 @@ let users = [];
 let buzzerEnabled = false;
 let buzzed = [];
 let enable_time = 0;
+const rtbGamestate = {};
 
 // IP-Adresse des Servers ermitteln
 function getIP() {
@@ -336,6 +337,95 @@ io.on("connection", (socket) => {
 		});
 
 		io.emit("updateUsers", users);
+	});
+
+	socket.on("rtb", ({ user, option, stake }) => {
+		if (!user || !user.id) {
+			socket.emit("numberguesser-finish", {
+				error: "User nicht gefunden.",
+			});
+			return;
+		}
+		const serverUser = users.find((u) => u.id === user.id);
+		if (!serverUser) {
+			socket.emit("numberguesser-finish", {
+				error: "User nicht gefunden.",
+			});
+			return;
+		}
+		if (stake <= 0) {
+			socket.emit("numberguesser-finish", {
+				error: "Ungültiger Einsatz",
+			});
+			return;
+		}
+		if (user.chips < stake) {
+			socket.emit("numberguesser-finish", { error: "Nicht genug Chips" });
+			return;
+		}
+
+		if(!rtbGamestate[user]) {
+			rtbGamestate[user] = {
+				usedCards: [],
+				phase: 1
+			};
+		}
+
+		serverUser.chips -= stake;
+		let win = false;
+		let payout = 0;
+
+		const card = drawCard(rtbGamestate[user].usedCards);
+		const color = getCardColor(card)
+
+		socket.on("rtb2", option => {
+			
+		});
+
+		socket.on("rtb3", option => {
+
+		});
+
+		socket.on("rtb4", option => {
+
+		});
+
+		socket.on("rtb-cancel", () => {
+			delete rtbGamestate[user];
+		});
+
+		function drawCard(usedCards) {
+			let card;
+			do {
+				card = Math.floor(Math.random() * 52);
+			} while (usedCards.includes(card));
+			usedCards.push(card);
+			return card;
+		}
+
+		function getCardValue(index) {
+			return (index/4)+2;
+		}
+
+		function getCardColor(index) {
+			return (index % 4) < 2 ? "schwarz" : "rot";
+		}
+
+		function getCardSuit(index) {
+			const card = index%4;
+			switch(card) {
+				case 1:
+					return 'club'
+				case 2:
+					return 'diamond';
+				case 3:
+					return 'heart';
+				case 0:
+					return 'spade';
+				default:
+					return 'error';
+			}
+		}
 	});
 });
 

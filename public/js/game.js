@@ -127,5 +127,8 @@ async function guessNumber() {
 }
 
 async function rtb() {
-	return;
+	const cookies = await getCookies();
+	const user = JSON.parse(cookies);
+
+	socket.emit("rtb", user);
 }
