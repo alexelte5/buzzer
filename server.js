@@ -1,6 +1,7 @@
 const dns = require("node:dns");
 const os = require("node:os");
 
+const { exec } = require("child_process");
 const express = require("express");
 const path = require("path");
 const http = require("http");
@@ -52,6 +53,25 @@ app.get("/admin/users", (req, res) => {
 		score: user.score,
 	}));
 	res.json(filteredUsers);
+});
+
+app.post("/deploy", (req, res) => {
+	const data = req.body;
+	if (data && data.ref === "refs/heads/main") {
+		exec('pkill -f "node server.js"', (error, stdout, stderr) => {
+			if (error) {
+				console.error(`Fehler beim Beenden: ${error.message}`);
+				return;
+			}
+			if (stderr) {
+				console.error(`Fehlerausgabe: ${stderr}`);
+				return;
+			}
+			console.log(`Beendet: ${stdout}`);
+		});
+		return res.status(200).send("Deploy started");
+	}
+	return res.status(400).send("No main branch push");
 });
 
 app.post("/register", (req, res) => {
@@ -364,10 +384,10 @@ io.on("connection", (socket) => {
 			return;
 		}
 
-		if(!rtbGamestate[user]) {
+		if (!rtbGamestate[user]) {
 			rtbGamestate[user] = {
 				usedCards: [],
-				phase: 1
+				phase: 1,
 			};
 		}
 
@@ -376,19 +396,13 @@ io.on("connection", (socket) => {
 		let payout = 0;
 
 		const card = drawCard(rtbGamestate[user].usedCards);
-		const color = getCardColor(card)
+		const color = getCardColor(card);
 
-		socket.on("rtb2", option => {
-			
-		});
+		socket.on("rtb2", (option) => {});
 
-		socket.on("rtb3", option => {
+		socket.on("rtb3", (option) => {});
 
-		});
-
-		socket.on("rtb4", option => {
-
-		});
+		socket.on("rtb4", (option) => {});
 
 		socket.on("rtb-cancel", () => {
 			delete rtbGamestate[user];
@@ -404,26 +418,26 @@ io.on("connection", (socket) => {
 		}
 
 		function getCardValue(index) {
-			return (index/4)+2;
+			return index / 4 + 2;
 		}
 
 		function getCardColor(index) {
-			return (index % 4) < 2 ? "schwarz" : "rot";
+			return index % 4 < 2 ? "schwarz" : "rot";
 		}
 
 		function getCardSuit(index) {
-			const card = index%4;
-			switch(card) {
+			const card = index % 4;
+			switch (card) {
 				case 1:
-					return 'club'
+					return "club";
 				case 2:
-					return 'diamond';
+					return "diamond";
 				case 3:
-					return 'heart';
+					return "heart";
 				case 0:
-					return 'spade';
+					return "spade";
 				default:
-					return 'error';
+					return "error";
 			}
 		}
 	});
