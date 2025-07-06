@@ -137,3 +137,7 @@ function showToast(el) {
     toast.classList.add("hide");
   }, 3000);
 }
+
+function homepage() {
+  window.location.href = "https://kysfrfr.de";
+}

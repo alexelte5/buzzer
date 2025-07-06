@@ -1,57 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./css/style.css" />
-    <link rel="stylesheet" href="./css/games.css" />
-    <title>Buzzer</title>
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="./js/common.js"></script>
-    <script src="./js/skins.js"></script>
-    <script src="./js/shop.js"></script>
-    <script src="./js/game.js"></script>
-    <script src="./js/buzzer.js"></script>
-    <link
-      rel="apple-touch-icon"
-      sizes="180x180"
-      href="./favicon/apple-touch-icon.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="32x32"
-      href="./favicon/favicon-32x32.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="16x16"
-      href="./favicon/favicon-16x16.png"
-    />
-  </head>
-  <body>
-    <div class="top-right">
-      <button id="settings" onclick="openDialog('settings-dialog')">Einstellungen</button>
-    </div>
-    <div class="main-content">
-      <button id="buzzer" class="buzzer"></button>
-      <audio id="buzzer-sound" src=""></audio>
-    </div>
-    <div class="bottom-right">
-      <button onclick="openGameDialog()">🤫</button>
-      <button onclick="openShopDialog()">💲</button>
-    </div>
-    <dialog id="settings-dialog" class="settings">
-      <div class="settings-wrapper">
-        <div class="upper">
-          <h1>Einstellungen</h1>
-          <button class="close" onclick="closeDialog('settings-dialog')">&times;</button>
-        </div>
-        <button class="danger" onclick="deleteCookies()">Abmelden</button>
-      </div>
-    </dialog>
-    <div id="shop-dialog-container"></div>
-    <div id="game-dialog-container"></div>
-  </body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="./css/style.css" />
+		<link rel="stylesheet" href="./css/games.css" />
+		<title>Buzzer</title>
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="./js/common.js"></script>
+		<script src="./js/skins.js"></script>
+		<script src="./js/shop.js"></script>
+		<script src="./js/game.js"></script>
+		<script src="./js/buzzer.js"></script>
+		<link
+			rel="apple-touch-icon"
+			sizes="180x180"
+			href="./favicon/apple-touch-icon.png"
+		/>
+		<link
+			rel="icon"
+			type="image/png"
+			sizes="32x32"
+			href="./favicon/favicon-32x32.png"
+		/>
+		<link
+			rel="icon"
+			type="image/png"
+			sizes="16x16"
+			href="./favicon/favicon-16x16.png"
+		/>
+	</head>
+	<body>
+		<div class="top-content">
+			<div class="top-left">
+				<button id="home" onclick="homepage()">&#8678; KysFrFr</button>
+			</div>
+			<div class="top-right">
+				<button id="settings" onclick="openDialog('settings-dialog')">
+					Einstellungen
+				</button>
+			</div>
+		</div>
+		<div class="main-content">
+			<button id="buzzer" class="buzzer"></button>
+			<audio id="buzzer-sound" src=""></audio>
+		</div>
+		<div class="bottom-right">
+			<button onclick="openGameDialog()">🤫</button>
+			<button onclick="openShopDialog()">💲</button>
+		</div>
+		<dialog id="settings-dialog" class="settings">
+			<div class="settings-wrapper">
+				<div class="upper">
+					<h1>Einstellungen</h1>
+					<button
+						class="close"
+						onclick="closeDialog('settings-dialog')"
+					>
+						&times;
+					</button>
+				</div>
+				<button class="danger" onclick="deleteCookies()">
+					Abmelden
+				</button>
+			</div>
+		</dialog>
+		<div id="shop-dialog-container"></div>
+		<div id="game-dialog-container"></div>
+	</body>
 </html>

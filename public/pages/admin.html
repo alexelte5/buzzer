@@ -28,9 +28,16 @@
     />
   </head>
   <body>
-    <div class="top-right">
-      <button id="settings" onclick="openSettings()">Einstellungen</button>
-    </div>
+    <div class="top-content">
+			<div class="top-left">
+				<button id="home" onclick="homepage()">&#8678; KysFrFr</button>
+			</div>
+			<div class="top-right">
+				<button id="settings" onclick="openDialog('settings-dialog')">
+					Einstellungen
+				</button>
+			</div>
+		</div>
 
     <div class="main-content">
       <button onclick="enableBuzzer()" id="enableBuzzer">

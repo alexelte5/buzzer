@@ -345,26 +345,26 @@ io.on("connection", (socket) => {
 
 	socket.on("rtb", ({ user, option, stake }) => {
 		if (!user || !user.id) {
-			socket.emit("numberguesser-finish", {
+			socket.emit("rtb-finish", {
 				error: "User nicht gefunden.",
 			});
 			return;
 		}
 		const serverUser = users.find((u) => u.id === user.id);
 		if (!serverUser) {
-			socket.emit("numberguesser-finish", {
+			socket.emit("rtb-finish", {
 				error: "User nicht gefunden.",
 			});
 			return;
 		}
 		if (stake <= 0) {
-			socket.emit("numberguesser-finish", {
+			socket.emit("rtb-finish", {
 				error: "Ungültiger Einsatz",
 			});
 			return;
 		}
 		if (user.chips < stake) {
-			socket.emit("numberguesser-finish", { error: "Nicht genug Chips" });
+			socket.emit("rtb-finish", { error: "Nicht genug Chips" });
 			return;
 		}
 
@@ -381,6 +381,16 @@ io.on("connection", (socket) => {
 
 		const card = drawCard(rtbGamestate[user].usedCards);
 		const color = getCardColor(card);
+		if(color === option) {
+			win = true;
+			payout = stake * 2;
+		}
+
+		socket.emit("rtb-finish", ({
+			win,
+			payout,
+			card
+		}))
 
 		socket.on("rtb2", (option) => {});
 
@@ -389,6 +399,7 @@ io.on("connection", (socket) => {
 		socket.on("rtb4", (option) => {});
 
 		socket.on("rtb-cancel", () => {
+
 			delete rtbGamestate[user];
 		});
 

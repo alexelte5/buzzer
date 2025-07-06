@@ -1,16 +1,17 @@
 :root {
-  --bg: #121212;
+  --bg: #1e1e2f;
   --surface: #1e1e1e;
   --text: #ededed;
   --text-muted: #aaaaaa;
   --primary: #00c896;
   --danger: #ff6b6b;
-  --admin: #4c6ef5;
+  --admin: #4f46e5;
   --border: #2c2c2c;
+  --hover: #3730a3;
 }
 
 body {
-  background-color: var(--bg);
+  background: var(--bg);
   color: var(--text);
   font-family: "Segoe UI", sans-serif;
   display: grid;
@@ -35,6 +36,26 @@ h1 {
   gap: 50px;
   height: 100%;
   width: 100%;
+}
+
+.top-content {
+  grid-column: 1 / 4;
+  grid-row: 1 / 2;
+  gap: 50px;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.top-left {
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
+  justify-self: start;
+  align-self: start;
+  display: flex;
+  gap: 10px;
+  padding: 10px;
 }
 
 .top-center {
@@ -76,7 +97,7 @@ h1 {
 
 .input-username,
 .button-username {
-  display: block; /* sicherstellen, dass beide gleich rendern */
+  display: block;
   width: 100%;
   box-sizing: border-box;
   font-size: 1.2em;
