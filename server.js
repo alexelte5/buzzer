@@ -315,7 +315,7 @@ io.on("connection", (socket) => {
 			socket.emit("numberguesser-finish", { error: "Nicht genug Chips" });
 			return;
 		}
-		if (guess >= mode || guess <= 0) {
+		if (guess > mode || guess <= 0) {
 			socket.emit("numberguesser-finish", { error: "Ungültiger Guess" });
 			return;
 		}
